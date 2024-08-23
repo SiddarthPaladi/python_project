@@ -10,7 +10,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -33,7 +32,9 @@ jobs:
       run: flake8 .
 
     - name: Run tests
-      run: pytest
+      run: |
+        export PYTHONPATH=$(pwd)
+        pytest
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
@@ -53,4 +54,4 @@ jobs:
     - name: Deploy to server (Optional)
       if: github.ref == 'refs/heads/main'
       run: |
-        ssh user@your-server 'docker pull ${{ secrets.DOCKER_USERNAME }}/movecloud-flask-app:latest && docker run -d --rm -p 80:5000 --name movecloud-flask-app-container ${{ secrets.DOCKER_USERNAME }}/movecloud-flask-app:latest'
+        ssh user@your-server 'docker pull ${{ secrets.DOCKER_USERNAME }}/movecloud-flask-app:latest && docker run -d --rm -p 80:5000 --name movecloud-flask-app-container ${{ secrets.DOCKER_USERNAME }}/movecloud-
